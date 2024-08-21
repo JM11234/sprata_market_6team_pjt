@@ -19,13 +19,13 @@ def login(request):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            next_url = request.GET.get("next") or "products:product_list"
+            next_url = request.GET.get("next") or "index"  ## products:product_list
             return redirect(next_url)
     else:
         form = AuthenticationForm()
 
     context = {"form": form}
-    return render(request, "login.html", context)
+    return render(request, "accounts/login.html", context)
 
 
 # 로그아웃
@@ -33,7 +33,8 @@ def login(request):
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
-    return redirect("products:product_list")
+    # return redirect("products:product_list")
+    return redirect('index')
 
 
 # 사용자 업데이트
@@ -47,7 +48,7 @@ def update(request):
     else:
         form = CustomUserChangeForm(instance=request.user)
     context = {"form": form}
-    return render(request, "update.html", context)
+    return render(request, "accounts/update.html", context)
 
 
 # 패스워드 변경
@@ -61,7 +62,7 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     context = {"form": form}
-    return render(request, "change_password.html", context)
+    return render(request, "accounts/change_password.html", context)
 
 
 # 회원가입
@@ -74,12 +75,14 @@ def signup(request):
             # 프로필 생성
             Profile.objects.create(user=user)
             auth_login(request, user)
-            return redirect("products:product_list")
+            return redirect("index")
+            # return redirect("products:product_list")
+
     else:
         form = CustomUserCreationForm()
 
     context = {"form": form}
-    return render(request, "signup.html", context)
+    return render(request, "accounts/signup.html", context)
 
 
 def users(request):
@@ -104,7 +107,9 @@ def delete(request):
     if request.user.is_authenticated:
         request.user.delete()
         auth_logout(request)
-    return redirect("products:product_list")
+        ## return redirect("products:product_list")
+        return redirect("index")
+        
 
 
 # Create your views here.
