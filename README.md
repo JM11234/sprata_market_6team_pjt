@@ -25,3 +25,4 @@ API 명세
 
 설치 필요 패키지 requirements.txt에 명시 pip install -r requirements.txt 로 설치
 
+![image (3)](https://github.com/user-attachments/assets/9d0948d7-c603-48b1-8c9b-8993d1de5b63)
