@@ -1,9 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ProductForm
+from .forms import ProductForm, CommentForm
 from .models import Products
 from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth.decorators import login_required
+from hitcount.views import HitCountDetailView
 
+
+class ProductDetailView(HitCountDetailView):
+    model = Products
+    template_name = 'products/detail.html'
+    count_hit = True
+    
 # Create your views here.
 def index(request):
     products = Products.objects.all()
@@ -30,8 +37,10 @@ def create(request):
 
 def detail(request,pk):
     product = get_object_or_404(Products,id=pk)
+    form = CommentForm()
     context ={
-        "product":product
+        "product":product,
+        "form":form,
     }
     return render(request, 'products/detail.html', context)
 
@@ -42,3 +51,20 @@ def delete(request,pk):
         if request.user == product.author:
             product.delete()
     return redirect('index')
+
+@require_http_methods(["GET","POST"])
+def update(request,pk):
+    product = get_object_or_404(Products,id=pk)
+    
+    if request.method=="POST":
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect("products:product_detail", product.pk)
+    else:
+        form = ProductForm(instance=product)
+    context = {
+        'product':product,
+        'form':form
+    }
+    return render(request,'products/update.html',context)

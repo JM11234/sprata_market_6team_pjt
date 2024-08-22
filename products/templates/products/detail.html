@@ -11,15 +11,21 @@
     <div class="col-md-6">
         <h2 class="mb-3">작성자 : {{product.author}}</h2>
         <h2 class="mb-3">상품명 : {{product.title}}</h2>
+        <p class="mb-4">조회수: {{hitcount.total_hits}}</p>
         <p class="mb-4">상품 내용: {{product.content}}</p>
         <p class="mb-4">작성일자: {{product.created_at}}</p>
         <!-- 구매 버튼 -->
         {% if request.user == product.author%}
         <form action="{%url 'products:product_delete' product.pk%}" method="POST">
             {% csrf_token%}
+            <a href="{% url 'products:product_update' product.pk%}">수정하기</a>
             <button type="submit" class="btn btn-primary">삭제하기</button>
         </form>
         {%endif%}
+        <form action="" method="POST">
+            {% csrf_token%}
+            {{form.as_p}}
+        </form>
     </div>
 </div>
 {%endblock content%}
