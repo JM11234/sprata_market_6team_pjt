@@ -7,4 +7,6 @@ urlpatterns = [
     path('<int:pk>/detail/',views.detail,name='product_detail'),
     path('<int:pk>/delete/', views.delete,name='product_delete'),
     path('<int:pk>/update/',views.update,name='product_update'),
+    path('<int:pk>/comment_create/',views.comment_create,name='comment_create'),
+    path('<int:pk>/comment_delete/',views.comment_delete,name='comment_delete'),
 ]

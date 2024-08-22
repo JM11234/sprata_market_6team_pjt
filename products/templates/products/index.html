@@ -12,6 +12,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{product.title}}</h5>
                 <p class="card-text">조회수</p>
+                <p class="card-text">댓글: {{ product.comments.all | length }}</p>
             </div>
         </div>
     </div>

@@ -22,10 +22,41 @@
             <button type="submit" class="btn btn-primary">삭제하기</button>
         </form>
         {%endif%}
-        <form action="" method="POST">
+                <form action="{%url 'products:comment_create' product.pk%}" method="POST">
             {% csrf_token%}
             {{form.as_p}}
+            <button type="submit" class="btn btn-primary">댓글달기</button>
         </form>
+        <div class="container mt-8">
+            <div class="row">
+              <div class="col-md-10 offset-md-2">
+                <h3 class="mb-4">댓글 목록</h3>
+                <div class="comment-list">
+                  <!-- 여기서부터 for문으로 반복 -->
+                  {%for comment in comments%}
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <h5 class="card-title">{{comment.reviewer}}</h5>
+                        <small class="text-muted">{{comment.created_at}}</small>
+                      </div>
+                      <p class="card-text">{{comment.comment}}</p>
+                      <div class="d-flex justify-content-end">
+                        {% if comment.reviewer == request.user%}
+                        <form action="{%url 'products:comment_delete' comment.pk%}" method="POST">
+                            {%csrf_token%}
+                            <button class="btn btn-sm btn-outline-danger">삭제</button>
+                        </form>
+                        {%endif%}
+                        </div>
+                    </div>
+                  </div>
+                  {%endfor%}
+                  <!-- 여기까지 for문으로 반복 -->
+                </div>
+              </div>
+            </div>
+          </div>    
     </div>
 </div>
 {%endblock content%}
