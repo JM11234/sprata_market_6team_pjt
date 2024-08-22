@@ -131,7 +131,7 @@ def profile(request, user_id):
         'profile': profile,
         'form': form,
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'accounts/profile.html', context)
 
 
 @require_POST
