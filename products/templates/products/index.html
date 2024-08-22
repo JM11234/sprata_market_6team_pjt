@@ -1,5 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>인덱스</h1>
+<h1>상품 리스트</h1>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- 상품 1 -->
+    {% for product in products%}
+    <a href="{%url 'products:product_detail' product.pk%}">
+    <div class="col">
+        <div class="card h-100">
+            <img src="{{product.product_image.url}}" class="card-img-top" alt="상품 1">
+            <div class="card-body">
+                <h5 class="card-title">{{product.title}}</h5>
+                <p class="card-text">조회수</p>
+            </div>
+        </div>
+    </div>
+    </a>
+    {% endfor%}
+</div>
 {% endblock content %}

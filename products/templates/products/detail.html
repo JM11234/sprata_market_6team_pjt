@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+
+{%block content%}
+
+<div class="row">
+    <!-- 상품 이미지 -->
+    <div class="col-md-6 mb-4">
+        <img src="{{product.product_image.url}}" class="img-fluid rounded" alt="상품 이미지">
+    </div>
+    <!-- 상품 정보 -->
+    <div class="col-md-6">
+        <h2 class="mb-3">작성자 : {{product.author}}</h2>
+        <h2 class="mb-3">상품명 : {{product.title}}</h2>
+        <p class="mb-4">상품 내용: {{product.content}}</p>
+        <p class="mb-4">작성일자: {{product.created_at}}</p>
+        <!-- 구매 버튼 -->
+        {% if request.user == product.author%}
+        <form action="{%url 'products:product_delete' product.pk%}" method="POST">
+            {% csrf_token%}
+            <button type="submit" class="btn btn-primary">삭제하기</button>
+        </form>
+        {%endif%}
+    </div>
+</div>
+{%endblock content%}

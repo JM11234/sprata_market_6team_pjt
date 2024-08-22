@@ -70,12 +70,12 @@
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ profile.profile_image.url }}" style="width: 32px; height: 32px;" class="rounded-circle">
                         </a>
-                        <ul class="dropdown-menu text-small" style="">
+                        <ul class="dropdown-menu text-small">
 
                             <li><a class="dropdown-item"
                                    href="{% url 'accounts:profile' request.user.id %}">{{ user.first_name|default:user.username }}님
                                 프로필</a></li>
-                            {% comment %} <li><a href="{% url 'products:product_create' %}" class="dropdown-item">상품추가</a></li> {% endcomment %}
+                             <li><a href="{% url 'products:product_create' %}" class="dropdown-item">상품추가</a></li> 
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
