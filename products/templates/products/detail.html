@@ -22,7 +22,12 @@
             <button type="submit" class="btn btn-primary">삭제하기</button>
         </form>
         {%endif%}
-                <form action="{%url 'products:comment_create' product.pk%}" method="POST">
+        <form action="{%url 'products:product_like' product.pk%}" method="post">
+          {% csrf_token%}
+          <input type="submit" value="좋아요">
+
+        </form>
+        <form action="{%url 'products:comment_create' product.pk%}" method="POST">
             {% csrf_token%}
             {{form.as_p}}
             <button type="submit" class="btn btn-primary">댓글달기</button>

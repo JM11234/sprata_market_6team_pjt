@@ -81,7 +81,7 @@ def comment_create(request,pk):
         comment.goods = product
         comment.save()
         return redirect('products:product_detail', product.pk)
- 
+
 @require_POST   
 def comment_delete(request,pk):
     comment = get_object_or_404(ProductComment,id=pk)
@@ -90,3 +90,14 @@ def comment_delete(request,pk):
         if request.user == comment.reviewer:
             comment.delete()
     return redirect('products:product_detail',product.id)
+
+@require_POST
+def like(request,pk):
+    if request.user.is_authenticated:
+        product = get_object_or_404(Products, pk=pk)
+        if product.like_users.filter(pk=request.user.pk).exists():
+            product.like_users.remove(request.user)  # 좋아요 취소
+        else:
+            product.like_users.add(request.user)
+        return redirect("products:product_detail")
+    return redirect("accounts:login")
