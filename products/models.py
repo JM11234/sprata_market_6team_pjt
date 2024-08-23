@@ -5,6 +5,8 @@ from django.contrib.contenttypes.fields import GenericRelation
 # Create your models here.
 class Hashtag(models.Model):
     content = models.CharField(max_length=50, unique=True, blank=True)
+    def __str__(self):
+        return self.content
     
 class Products(models.Model):
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="uploader")

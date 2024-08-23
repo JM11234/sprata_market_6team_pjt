@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProductForm, CommentForm
-from .models import ProductComment, Products
+from .models import ProductComment, Products, Hashtag
 from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count
@@ -33,6 +33,11 @@ def create(request):
             product = form.save(commit=False)
             product.author =request.user
             product.save()
+            hashtags=form.cleaned_data["hashtags"]
+            for tag in hashtags:
+                # 해쉬태그 중복생성 방지
+                hashtag, created =Hashtag.objects.get_or_create(content=tag)
+                product.hashtag.add(hashtag)
             return redirect("index")
     else:
         form = ProductForm()
@@ -59,7 +64,7 @@ def detail(request,pk):
     context ={
         "product":product,
         "form":form,
-        "comments":comments,
+        "comments":comments
     }
     return render(request, 'products/detail.html', context)
 

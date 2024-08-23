@@ -13,6 +13,7 @@
         <h2 class="mb-3">상품명 : {{product.title}}</h2>
         <p class="mb-4">조회수: {{product.p_hit}}</p>
         <p class="mb-4">상품 내용: {{product.content}}</p>
+        <p class="mb-4">해쉬태그: {% for hashtag in product.hashtag.all %} #{{ hashtag.content }} {% if not forloop.last %}, {% endif %} {% endfor %}</p>
         <p class="mb-4">작성일자: {{product.created_at}}</p>
         <!-- 구매 버튼 -->
         {% if request.user == product.author%}
