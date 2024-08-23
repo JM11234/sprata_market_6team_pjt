@@ -18,11 +18,11 @@
         {% if request.user == product.author%}
         <form action="{%url 'products:product_delete' product.pk%}" method="POST">
             {% csrf_token%}
-            <a href="{% url 'products:product_update' product.pk%}">수정하기</a>
+            <a href="{% url 'products:product_update' product.pk%}" class="btn btn-primary" role="button">수정하기</a>
             <button type="submit" class="btn btn-primary">삭제하기</button>
         </form>
         {%endif%}
-
+        {%if request.user != product.author%}
         <form action="{%url 'products:product_like' product.pk%}" method="post">
           {% csrf_token%}
           {%if request.user in product.like_users.all %}
@@ -35,6 +35,7 @@
             </button>
           {%endif %}
         </form>
+        {%endif %}
 
         <form action="{%url 'products:comment_create' product.pk%}" method="POST">
             {% csrf_token%}

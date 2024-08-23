@@ -3,17 +3,21 @@ from .forms import ProductForm, CommentForm
 from .models import ProductComment, Products
 from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth.decorators import login_required
-from hitcount.views import HitCountDetailView
+from django.db.models import Q, Count
 
 
-class ProductDetailView(HitCountDetailView):
-    model = Products
-    template_name = 'products/detail.html'
-    count_hit = True
-    
 # Create your views here.
 def index(request):
+    query = request.GET.get("query","").strip()
+    sort = request.GET.get("sort","")
     products = Products.objects.all()
+    if sort == 'likes':
+        products = products.annotate(count =Count('like_users')).order_by('-count','-pk')
+    else:
+        products = products.order_by("-pk")
+    if query:
+        products = products.filter(Q(title__icontains=query)|Q(content__icontains=query))
+    
     context = {
         'products': products
     }
