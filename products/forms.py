@@ -1,5 +1,5 @@
 from django import forms
-from .models import Products, ProductComment
+from .models import Products, ProductComment, Hashtag
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -17,3 +17,6 @@ class CommentForm(forms.ModelForm):
             'comment',
         ]
         
+# class HashtagForm(forms.ModelForm):
+#     class Meta:
+#         model = Hashtag

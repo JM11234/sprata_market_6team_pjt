@@ -4,9 +4,11 @@ from .models import ProductComment, Products
 from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count
+from datetime import timedelta
 
 
 # Create your views here.
+
 def index(request):
     query = request.GET.get("query","").strip()
     sort = request.GET.get("sort","")
@@ -39,8 +41,19 @@ def create(request):
     }
     return render(request,'products/create.html',context)    
 
+
 def detail(request,pk):
     product = get_object_or_404(Products,id=pk)
+    # 사용자가 이 상품 페이지를 방문했는지 세션에서 확인
+    if not request.session.get(f'v_{pk}'):
+        product.p_hit += 1
+        product.save()
+        # 세션에 이 상품을 방문했음 기록
+        request.session[f'v_{pk}'] = True
+
+        # 세션 만료 시간 설정 (예: 1일)
+        request.session.set_expiry(timedelta(days=1))
+        
     comments = product.comments.all().order_by('-pk')
     form = CommentForm()
     context ={
