@@ -99,5 +99,5 @@ def like(request,pk):
             product.like_users.remove(request.user)  # 좋아요 취소
         else:
             product.like_users.add(request.user)
-        return redirect("products:product_detail")
+        return redirect("products:product_detail", product.pk)
     return redirect("accounts:login")

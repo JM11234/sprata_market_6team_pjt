@@ -25,15 +25,3 @@ class ProductComment(models.Model):
     comment = models.CharField(max_length=70)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-# 중계테이블로 사용
-# class ProductLike(models.Model):
-#     user = models.ForeignKey(
-#         to=settings.AUTH_USER_MODEL,
-#         on_delete=models.CASCADE, related_name="like_products"
-#     )
-#     product = models.ForeignKey(
-#         to=Products, on_delete=models.CASCADE, related_name="like_users"
-#     )
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)

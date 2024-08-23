@@ -9,5 +9,5 @@ urlpatterns = [
     path('<int:pk>/update/',views.update,name='product_update'),
     path('<int:pk>/comment_create/',views.comment_create,name='comment_create'),
     path('<int:pk>/comment_delete/',views.comment_delete,name='comment_delete'),
-    # path('<int:pk>/like/', views.like, name="product_like"),
+    path('<int:pk>/like/', views.like, name="product_like"),
 ]
