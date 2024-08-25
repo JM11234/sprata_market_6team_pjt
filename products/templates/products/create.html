@@ -1,0 +1,11 @@
+{% extends 'base.html'%}
+
+{%block content%}
+
+<form action="{%url 'products:product_create'%}" method="POST" enctype="multipart/form-data">
+    {% csrf_token%}
+    {{form.as_p}}
+    <input type="submit" value="상품등록">
+</form>
+
+{%endblock content%}

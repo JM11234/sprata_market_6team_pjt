@@ -1,0 +1,79 @@
+{% extends 'base.html'%}
+
+{%block content%}
+
+<div class="row">
+    <!-- 상품 이미지 -->
+    <div class="col-md-6 mb-4">
+        <img src="{{product.product_image.url}}" class="img-fluid rounded" alt="상품 이미지">
+    </div>
+    <!-- 상품 정보 -->
+    <div class="col-md-6">
+        <h2 class="mb-3">작성자 : <a href="{%url 'accounts:profile' product.author.pk%}">{{product.author}}</a></h2>
+        <h2 class="mb-3">상품명 : {{product.title}}</h2>
+        <p class="mb-4">조회수: {{product.p_hit}}</p>
+        <p class="mb-4">상품 내용: {{product.content}}</p>
+        <p class="mb-4">해쉬태그: {% for hashtag in product.hashtag.all %} #{{ hashtag.content }} {% if not forloop.last %}, {% endif %} {% endfor %}</p>
+        <p class="mb-4">작성일자: {{product.created_at}}</p>
+        <!-- 구매 버튼 -->
+        {% if request.user == product.author%}
+        <form action="{%url 'products:product_delete' product.pk%}" method="POST">
+            {% csrf_token%}
+            <a href="{% url 'products:product_update' product.pk%}" class="btn btn-primary" role="button">수정하기</a>
+            <button type="submit" class="btn btn-primary">삭제하기</button>
+        </form>
+        {%endif%}
+        {%if request.user != product.author%}
+        <form action="{%url 'products:product_like' product.pk%}" method="post">
+          {% csrf_token%}
+          {%if request.user in product.like_users.all %}
+            <button class="btn btn-outline-primary btn-like" data-product-id="123">
+              <i class="bi bi-hand-thumbs-up-fill"></i>
+            </button>
+          {%else%}
+            <button class="btn btn-outline-primary btn-like" data-product-id="123">
+              <i class="bi bi-hand-thumbs-up"></i>
+            </button>
+          {%endif %}
+        </form>
+        {%endif %}
+
+        <form action="{%url 'products:comment_create' product.pk%}" method="POST">
+            {% csrf_token%}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-primary">댓글달기</button>
+        </form>
+        <p>&nbsp;</p>
+        <div class="container mt-8">
+            <div class="row">
+              <div class="col-md-12">
+                <h5 class="mb-4">댓글 목록</h5>
+                <div class="comment-list">
+                  <!-- 여기서부터 for문으로 반복 -->
+                  {%for comment in comments%}
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <h5 class="card-title">{{comment.reviewer}}</h5>
+                        <small class="text-muted">{{comment.created_at}}</small>
+                      </div>
+                      <p class="card-text">{{comment.comment}}</p>
+                      <div class="d-flex justify-content-end">
+                        {% if comment.reviewer == request.user%}
+                        <form action="{%url 'products:comment_delete' comment.pk%}" method="POST">
+                            {%csrf_token%}
+                            <button class="btn btn-sm btn-outline-danger">삭제</button>
+                        </form>
+                        {%endif%}
+                        </div>
+                    </div>
+                  </div>
+                  {%endfor%}
+                  <!-- 여기까지 for문으로 반복 -->
+                </div>
+              </div>
+            </div>
+          </div>    
+    </div>
+</div>
+{%endblock content%}

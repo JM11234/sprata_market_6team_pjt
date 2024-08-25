@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>상품 리스트</h1>
+<form method="GET" action="{% url 'index' %}">
+    <input type="hidden" name="query" value="{{ request.GET.query }}">
+<div class="form-group">
+<select class="form-select" id="sortSelect" name="sort" onchange="this.form.submit()">
+<option value="recent" {% if request.GET.sort == 'recent' %}selected{% endif %}>최신순</option>
+<option value="likes" {% if request.GET.sort == 'likes' %}selected{% endif %}>추천순</option>
+</select>
+</div>
+</form>
+<div class="row row-cols-1 mt-5 row-cols-md-3 g-4">
+    <!-- 상품 1 -->
+    {% for product in products%}
+    <a href="{%url 'products:product_detail' product.pk%}" class="text-decoration-none">
+        
+    <div class="col">
+        <div class="card h-50 w-80">
+            <div>
+            <img src="{{product.product_image.url}}" style="top:0; left:0; width:100%; height:200px; object-fit: cover;" class="card-img-top" alt="상품 1">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{product.title}}</h5>
+                <p class="card-text">조회수:{{product.p_hit}} </p>
+                <p class="card-text">해쉬태그: {% for hashtag in product.hashtag.all %} #{{ hashtag.content }} {% if not forloop.last %}, {% endif %} {% endfor %}</p>
+                <p class="card-text">찜 : {{product.like_users.all| length}}</p>
+                <p class="card-text">댓글: {{ product.comments.all | length }}</p>
+            </div>
+        </div>
+    </div>
+    </a>
+    {% endfor%}
+</div>
+{% endblock content %}
