@@ -43,10 +43,11 @@
             {{form.as_p}}
             <button type="submit" class="btn btn-primary">댓글달기</button>
         </form>
+        <p>&nbsp;</p>
         <div class="container mt-8">
             <div class="row">
-              <div class="col-md-10 offset-md-2">
-                <h3 class="mb-4">댓글 목록</h3>
+              <div class="col-md-12">
+                <h5 class="mb-4">댓글 목록</h5>
                 <div class="comment-list">
                   <!-- 여기서부터 for문으로 반복 -->
                   {%for comment in comments%}
