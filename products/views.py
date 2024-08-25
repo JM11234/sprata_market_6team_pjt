@@ -83,7 +83,15 @@ def update(request,pk):
     if request.method=="POST":
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
-            form.save()
+            product=form.save(commit=False)
+            product.author =request.user
+            product.save()
+            product.hashtag.clear()
+            hashtags=form.cleaned_data["hashtags"]
+            for tag in hashtags:
+                # 해쉬태그 중복생성 방지
+                hashtag, created =Hashtag.objects.get_or_create(content=tag)
+                product.hashtag.add(hashtag)
             return redirect("products:product_detail", product.pk)
     else:
         form = ProductForm(instance=product)
