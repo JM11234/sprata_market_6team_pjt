@@ -18,7 +18,7 @@ def index(request):
     else:
         products = products.order_by("-pk")
     if query:
-        products = products.filter(Q(title__icontains=query)|Q(content__icontains=query))
+         products = products.filter(Q(title__icontains=query)|Q(content__icontains=query)|Q(hashtag__content__icontains=query)).distinct()
     
     context = {
         'products': products
